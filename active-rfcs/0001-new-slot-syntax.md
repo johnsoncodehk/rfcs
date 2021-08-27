@@ -207,6 +207,13 @@ Let's review whether this proposal achieves our goals outlined above:
 <foo v-slot="{ msg }">
   {{ msg }}
 </foo>
+
+<!-- expected -->
+<foo>
+  <template v-slot="{ msg }">
+    {{ msg }}
+  </template>
+</foo>
 ```
 
 #### Default slot with element
@@ -222,6 +229,13 @@ Let's review whether this proposal achieves our goals outlined above:
 <!-- new -->
 <foo v-slot="{ msg }">
   <div>
+    {{ msg }}
+  </div>
+</foo>
+
+<!-- expected -->
+<foo>
+  <div v-slot="{ msg }">
     {{ msg }}
   </div>
 </foo>
@@ -246,6 +260,17 @@ Let's review whether this proposal achieves our goals outlined above:
   <bar v-slot="bar">
     <baz v-slot="baz">
       {{ foo }} {{ bar }} {{ baz }}
+    </baz>
+  </bar>
+</foo>
+
+<!-- expected -->
+<foo>
+  <bar v-slot="foo">
+    <baz v-slot="bar">
+      <template v-slot="baz">
+        {{ foo }} {{ bar }} {{ baz }}
+      </template>
     </baz>
   </bar>
 </foo>
@@ -276,6 +301,17 @@ Let's review whether this proposal achieves our goals outlined above:
       element slot: {{ msg }}
     </div>
   </template>
+</foo>
+
+<!-- expected -->
+<foo>
+  <template v-slot:one="{ msg }">
+    text slot: {{ msg }}
+  </template>
+
+  <div v-slot:two="{ msg }">
+    element slot: {{ msg }}
+  </div>
 </foo>
 ```
 
@@ -310,6 +346,21 @@ Let's review whether this proposal achieves our goals outlined above:
       <div>{{ two }} {{ bar }}</div>
     </bar>
   </template>
+</foo>
+
+<!-- expected -->
+<foo>
+  <bar v-slot:one="one">
+    <div v-slot="bar">
+      {{ one }} {{ bar }}
+    </div>
+  </bar>
+
+  <bar v-slot:two="two">
+    <div v-slot="bar">
+      {{ two }} {{ bar }}
+    </div>
+  </bar>
 </foo>
 ```
 
